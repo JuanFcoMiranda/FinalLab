@@ -9,19 +9,19 @@ export interface Task {
 }
 
 export enum TaskPriority {
-  Low,
+  Low= 1,
   Medium,
   High
 }
 
 export enum TaskStatus {
-  Pending,
+  Pending = 1,
   InProgress,
   Completed
 }
 
 export enum TaskCategory {
-  Work,
+  Work = 1,
   Personal,
   Other
 }

@@ -2,9 +2,9 @@
   <p>No tasks available.</p>
 }
 @else {
-  <div >
+  <div class="tasks-list">
     @for (task of tasks; track task.id) {
-      <div class="task-item">
+      <div class="task-item" [appPriorityColor]="task.priority">
         <h3>{{ task.title }}</h3>
         <p>{{ task.description }}</p>
         <p>{{ task.expirationDate | date:'dd/MM/yyyy' }}</p>

@@ -1,12 +1,14 @@
 import {Component, inject, signal} from '@angular/core';
 import {TaskService} from '../../services/task-service';
 import {DatePipe} from '@angular/common';
+import {PriorityColor} from "../../shared/directives/priority-color";
 
 @Component({
   selector: 'app-tasks-list',
-  imports: [
-    DatePipe
-  ],
+    imports: [
+        DatePipe,
+        PriorityColor
+    ],
   templateUrl: './tasks-list.html',
   styleUrl: './tasks-list.css'
 })

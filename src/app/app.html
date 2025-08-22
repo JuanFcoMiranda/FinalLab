@@ -1,1 +1,17 @@
-<router-outlet />
+<div class="app-container">
+    <app-header
+            [appTitle]="title()"
+            [currentUser]=""
+            (navigationClick)="onNavigation($event)"
+            (loginClick)="onHeaderLogin()"
+            (logoutClick)="onHeaderLogout()"
+    />
+    <!-- Main Content -->
+    <main class="main-content">
+        <router-outlet/>
+    </main>
+
+    <footer class="app-footer">
+        <p>Final Lab App - Angular</p>
+    </footer>
+</div>
