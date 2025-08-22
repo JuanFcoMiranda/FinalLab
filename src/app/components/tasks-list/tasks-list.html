@@ -1,0 +1,14 @@
+@if (tasks.length === 0) {
+  <p>No tasks available.</p>
+}
+@else {
+  <div >
+    @for (task of tasks; track task.id) {
+      <div class="task-item">
+        <h3>{{ task.title }}</h3>
+        <p>{{ task.description }}</p>
+        <p>{{ task.expirationDate | date:'dd/MM/yyyy' }}</p>
+      </div>
+    }
+  </div>
+}
