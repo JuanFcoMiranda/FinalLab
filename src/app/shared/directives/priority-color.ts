@@ -8,9 +8,9 @@ export class PriorityColor implements OnInit, OnChanges {
     @Input("appPriorityColor") priority: TaskPriority | undefined;
 
     priorityColors: { [key in TaskPriority]: string } = {
-        [TaskPriority.Low]: '#28a745', // Green color
-        [TaskPriority.Medium]: '#ffc107', // Yellow color
-        [TaskPriority.High]: '#dc3545' // Red color
+        [TaskPriority.Low]: '#6ce888', // Green color
+        [TaskPriority.Medium]: '#cfb05e', // Yellow color
+        [TaskPriority.High]: '#fa596b' // Red color
     };
 
     constructor(private readonly el: ElementRef) {}

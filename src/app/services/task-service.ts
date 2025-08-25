@@ -13,4 +13,15 @@ export class TaskService {
     { id: 3, title: 'Task 3', description: 'Description for Task 3', category: TaskCategory.Other,
       priority: TaskPriority.Low, status: TaskStatus.Completed, expirationDate: new Date('2025-10-15') }
   ];
+
+    getTaskById(id: number): Task | undefined {
+        return this.tasks.find(task => task.id === id);
+    }
+
+    updateTask(id: number, updatedTask: Task): void {
+        const index = this.tasks.findIndex(task => task.id === id);
+        if (index !== -1) {
+            this.tasks[index] = { ...updatedTask, id }; // Ensure the ID remains unchanged
+        }
+    }
 }
