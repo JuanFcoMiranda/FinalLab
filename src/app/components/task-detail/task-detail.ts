@@ -67,7 +67,7 @@ export class TaskDetail {
     }
 
     onSubmit() {
-        if (!this.taskForm.valid) {
+        if (this.taskForm.valid) {
             console.log("Form Submitted!", this.taskForm.value);
             const task : Task = {
                 id: this.taskForm.value.id!,
@@ -79,6 +79,9 @@ export class TaskDetail {
                 category: this.taskForm.value.category as TaskCategory
             };
             this.taskService.updateTask(Number(this.taskId()), task);
+            this.snackBar.open('Message sent successfully!', 'Dismiss', {
+                panelClass: ['snackbar-success'],
+            });
         }
         else {
             this.snackBar.open('Please fill in all required fields.', 'OK', {
