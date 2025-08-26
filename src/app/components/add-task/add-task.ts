@@ -9,6 +9,7 @@ import {MatOption, MatSelect} from "@angular/material/select";
 import {TaskCategory, TaskPriority, TaskStatus} from "../../models/task";
 import {TaskService} from "../../services/task-service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {TitleCasePipe} from "@angular/common";
 
 @Component({
   selector: 'app-add-task',
@@ -26,7 +27,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
         MatOption,
         MatSelect,
         MatSuffix,
-        MatError
+        MatError,
+        TitleCasePipe
     ],
   templateUrl: './add-task.html',
   styleUrl: './add-task.css'
@@ -55,7 +57,7 @@ export class AddTask {
         if (this.taskForm.valid) {
             console.log(this.taskForm.value);
             this.taskService.addTask(this.taskForm.value);
-            this.snackBar.open('Message sent successfully!', 'Dismiss', {
+            this.snackBar.open('Task created successfully!', 'Dismiss', {
                 panelClass: ['snackbar-success'],
             });
         } else {
@@ -65,17 +67,17 @@ export class AddTask {
         }
     }
 
-    checkForErrorsIn(formControl: AbstractControl) {
-        if (formControl.hasError('required')) {
+    checkForErrorsIn = (formControl: AbstractControl) => {
+        if (!formControl.hasError('required')) {
+            if (formControl.hasError('minlength')) {
+                let controlName = Object.keys(this.formControls).find(key => this.formControls[key] === formControl);
+                let requiredLength = formControl.getError('minlength').requiredLength;
+                return `${controlName} length must be at least ${requiredLength} characters`;
+            }
+            return '';
+        } else {
             let controlName = Object.keys(this.formControls).find(key => this.formControls[key] === formControl);
             return `${controlName} value is required`;
         }
-
-        if (formControl.hasError('minlength')) {
-            let controlName = Object.keys(this.formControls).find(key => this.formControls[key] === formControl);
-            let requiredLength = formControl.getError('minlength').requiredLength;
-            return `${controlName} length must be at least ${requiredLength} characters`;
-        }
-        return '';
-    }
+    };
 }

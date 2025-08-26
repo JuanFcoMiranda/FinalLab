@@ -7,6 +7,8 @@ import {MatIcon} from "@angular/material/icon";
 import {MatFabButton} from "@angular/material/button";
 import {Router} from "@angular/router";
 import {MatLabel} from "@angular/material/form-field";
+import {MatDialog} from "@angular/material/dialog";
+import {ConfirmDialog} from "../confirm-dialog/confirm-dialog";
 
 @Component({
     selector: 'app-tasks-list',
@@ -24,6 +26,12 @@ export class TasksList implements OnInit {
     private readonly router = inject(Router);
     private readonly taskService: TaskService = inject(TaskService)
     tasks: Task[] = [];
+
+    private readonly dialog: MatDialog;
+
+    constructor(dialog: MatDialog) {
+        this.dialog = dialog;
+    }
 
     ngOnInit(): void {
         this.tasks = this.taskService.getTasks();
@@ -43,5 +51,20 @@ export class TasksList implements OnInit {
         console.log(`Delete task with id ${task.id}.`);
         this.taskService.deleteTask(task.id);
         this.tasks = this.taskService.getTasks();
+    }
+
+    openDialog(task: Task) {
+        const dialogRef = this.dialog.open(ConfirmDialog, {
+            data: {
+                title: 'Confirm Deletion',
+                message: 'Do you want to delete the task?'
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+            if (confirmed) {
+                this.onDeleteTask(task);
+            }
+        });
     }
 }

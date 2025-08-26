@@ -10,6 +10,7 @@ import {MatError, MatFormField, MatInput, MatLabel, MatSuffix} from "@angular/ma
 import {MatOption, MatSelect} from "@angular/material/select";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {TitleCasePipe} from "@angular/common";
 
 @Component({
   selector: 'app-task-detail',
@@ -27,7 +28,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
         MatOption,
         MatLabel,
         CdkTextareaAutosize,
-        MatError
+        MatError,
+        TitleCasePipe
     ],
   templateUrl: './task-detail.html',
   styleUrl: './task-detail.css'
@@ -84,7 +86,7 @@ export class TaskDetail {
                 category: this.taskForm.value.category as TaskCategory
             };
             this.taskService.updateTask(Number(this.taskId()), task);
-            this.snackBar.open('Message sent successfully!', 'Dismiss', {
+            this.snackBar.open('Task updated successfully!', 'Dismiss', {
                 panelClass: ['snackbar-success'],
             });
         }
