@@ -38,4 +38,10 @@ export class TasksList implements OnInit {
         console.log(`Add a new task.`);
         this.router.navigate(['/add-task']).then();
     }
+
+    onDeleteTask(task: Task) {
+        console.log(`Delete task with id ${task.id}.`);
+        this.taskService.deleteTask(task.id);
+        this.tasks = this.taskService.getTasks();
+    }
 }

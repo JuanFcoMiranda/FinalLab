@@ -39,4 +39,8 @@ export class TaskService {
         const newId = this.tasks.length > 0 ? Math.max(...this.tasks.map(task => task.id)) + 1 : 1;
         this.tasks.push({...newTask, id: newId});
     }
+
+    deleteTask(id: number): void {
+        this.tasks = this.tasks.filter(task => task.id !== id);
+    }
 }

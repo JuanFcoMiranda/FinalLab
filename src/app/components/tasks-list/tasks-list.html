@@ -1,12 +1,13 @@
-@if (tasks.length === 0) {
-    <p>No tasks available.</p>
-} @else {
-    <div class="tasks-header">
-        <button matFab extended class="add-task-btn" (click)="onAddTask()">
-            <mat-icon>add</mat-icon>
-            <mat-label>Añadir Tarea</mat-label>
-        </button>
-        <div class="tasks-list">
+<div class="tasks-header">
+    <button matFab extended class="add-task-btn" (click)="onAddTask()">
+        <mat-icon>add</mat-icon>
+        <mat-label>Añadir Tarea</mat-label>
+    </button>
+    <div class="tasks-list">
+        @if (tasks.length === 0) {
+            <p>No tasks available.</p>
+        } @else {
+
             @for (task of tasks; track task.id) {
                 <div class="task-item" [appPriorityColor]="task.priority">
                     <h3>{{ task.title }}</h3>
@@ -18,8 +19,14 @@
                             Modificar
                         </button>
                     </p>
+                    <p>
+                        <button matFab extended (click)="onDeleteTask(task)">
+                            <mat-icon>delete</mat-icon>
+                            Eliminar
+                        </button>
+                    </p>
                 </div>
             }
-        </div>
+        }
     </div>
-}
+</div>

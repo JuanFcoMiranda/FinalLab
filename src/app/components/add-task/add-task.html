@@ -1,11 +1,16 @@
 <div class="">
     <h2 class="">Añadir Tarea</h2>
-    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" #form="ngForm">
         <mat-label>
             Title:
             <mat-form-field>
                 <input matInput #first formControlName="title"/>
             </mat-form-field>
+            @if(formControls.title?.invalid && (formControls.title?.dirty || formControls.title?.touched || form.submitted)) {
+                <mat-error>
+                    {{ checkForErrorsIn(formControls.title) }}
+                </mat-error>
+            }
         </mat-label>
         <br/>
         <mat-label>
@@ -17,6 +22,11 @@
                           cdkAutosizeMinRows="1"
                           cdkAutosizeMaxRows="5" formControlName="description"></textarea>
             </mat-form-field>
+            @if(formControls.description?.invalid && (formControls.description?.dirty || formControls.description?.touched || form.submitted)) {
+                <mat-error>
+                    {{ checkForErrorsIn(formControls.description) }}
+                </mat-error>
+            }
         </mat-label>
         <br/>
         <mat-label>
@@ -26,6 +36,11 @@
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
+            @if(formControls.expirationDate?.invalid && (formControls.expirationDate?.dirty || formControls.expirationDate?.touched || form.submitted)) {
+                <mat-error>
+                    {{ checkForErrorsIn(formControls.expirationDate) }}
+                </mat-error>
+            }
         </mat-label>
         <br/>
         <mat-label>
@@ -37,6 +52,11 @@
                     }
                 </mat-select>
             </mat-form-field>
+            @if(formControls.priority?.invalid && (formControls.priority?.dirty || formControls.priority?.touched || form.submitted)) {
+                <mat-error>
+                    {{ checkForErrorsIn(formControls.priority) }}
+                </mat-error>
+            }
         </mat-label>
         <br/>
         <mat-label>
@@ -48,6 +68,11 @@
                     }
                 </mat-select>
             </mat-form-field>
+            @if(formControls.status?.invalid && (formControls.status?.dirty || formControls.status?.touched || form.submitted)) {
+                <mat-error>
+                    {{ checkForErrorsIn(formControls.status) }}
+                </mat-error>
+            }
         </mat-label>
         <br/>
         <mat-label>
@@ -59,6 +84,11 @@
                     }
                 </mat-select>
             </mat-form-field>
+            @if(formControls.category?.invalid && (formControls.category?.dirty || formControls.category?.touched || form.submitted)) {
+                <mat-error>
+                    {{ checkForErrorsIn(formControls.category) }}
+                </mat-error>
+            }
         </mat-label>
         <br>
         <button matFab extended type="submit">

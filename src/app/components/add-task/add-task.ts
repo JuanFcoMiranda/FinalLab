@@ -1,10 +1,10 @@
 import {Component, inject} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {MatFabButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
-import {MatFormField, MatInput, MatLabel, MatSuffix} from "@angular/material/input";
+import {MatError, MatFormField, MatInput, MatLabel, MatSuffix} from "@angular/material/input";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {TaskCategory, TaskPriority, TaskStatus} from "../../models/task";
 import {TaskService} from "../../services/task-service";
@@ -25,7 +25,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
         MatLabel,
         MatOption,
         MatSelect,
-        MatSuffix
+        MatSuffix,
+        MatError
     ],
   templateUrl: './add-task.html',
   styleUrl: './add-task.css'
@@ -37,14 +38,18 @@ export class AddTask {
     statuses = Object.values(TaskStatus);
     categories = Object.values(TaskCategory);
     taskForm: FormGroup = new FormGroup({
-        id: new FormControl(0, Validators.required),
-        title: new FormControl("", Validators.minLength(3)),
-        description: new FormControl("", Validators.minLength(5)),
+        id: new FormControl(0),
+        title: new FormControl("", [Validators.minLength(3), Validators.required]),
+        description: new FormControl(""),
         expirationDate: new FormControl<Date | null>(null, Validators.required),
         priority: new FormControl("", Validators.required),
         status: new FormControl("", Validators.required),
         category: new FormControl("", Validators.required)
     });
+
+    get formControls(): any {
+        return this.taskForm['controls'];
+    }
 
     onSubmit() {
         if (this.taskForm.valid) {
@@ -54,10 +59,23 @@ export class AddTask {
                 panelClass: ['snackbar-success'],
             });
         } else {
-            console.log("Form is not valid");
             this.snackBar.open('Please fill in all required fields.', 'OK', {
                 panelClass: ['snackbar-error'],
             });
         }
+    }
+
+    checkForErrorsIn(formControl: AbstractControl) {
+        if (formControl.hasError('required')) {
+            let controlName = Object.keys(this.formControls).find(key => this.formControls[key] === formControl);
+            return `${controlName} value is required`;
+        }
+
+        if (formControl.hasError('minlength')) {
+            let controlName = Object.keys(this.formControls).find(key => this.formControls[key] === formControl);
+            let requiredLength = formControl.getError('minlength').requiredLength;
+            return `${controlName} length must be at least ${requiredLength} characters`;
+        }
+        return '';
     }
 }
