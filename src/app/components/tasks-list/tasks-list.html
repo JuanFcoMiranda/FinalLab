@@ -1,14 +1,41 @@
 <div class="tasks-header">
-    <button matFab extended class="add-task-btn" (click)="onAddTask()">
+    <button matFab extended class="add-task-btn filter-field" (click)="onAddTask()">
         <mat-icon>add</mat-icon>
         <mat-label>Añadir Tarea</mat-label>
     </button>
+    <mat-form-field class="filter-field">
+        <mat-label>Statuses</mat-label>
+        <mat-select [(ngModel)]="selectedStatus">
+            <mat-option>None</mat-option>
+            @for (status of statuses; track status) {
+                <mat-option [value]="status">{{ status }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="filter-field">
+        <mat-label>Categories</mat-label>
+        <mat-select [(ngModel)]="selectedCategory">
+            <mat-option>None</mat-option>
+            @for (category of categories; track category) {
+                <mat-option [value]="category">{{ category }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="filter-field">
+        <mat-label>Priorities</mat-label>
+        <mat-select [(ngModel)]="selectedPriority">
+            <mat-option>None</mat-option>
+            @for (priority of priorities; track priority) {
+                <mat-option [value]="priority">{{ priority }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
     <div class="tasks-list">
         @if (tasks.length === 0) {
             <p>No tasks available.</p>
         } @else {
-
-            @for (task of tasks; track task.id) {
+            @for (task of filteredTasks; track task.id) {
                 <div class="task-item" [appPriorityColor]="task.priority">
                     <h3>{{ task.title }}</h3>
                     <p>{{ task.description }}</p>

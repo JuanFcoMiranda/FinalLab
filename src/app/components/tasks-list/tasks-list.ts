@@ -2,13 +2,15 @@ import {Component, inject, OnInit} from '@angular/core';
 import {TaskService} from '../../services/task-service';
 import {DatePipe} from '@angular/common';
 import {PriorityColor} from "../../shared/directives/priority-color";
-import {Task} from "../../models/task";
+import {Task, TaskCategory, TaskPriority, TaskStatus} from "../../models/task";
 import {MatIcon} from "@angular/material/icon";
 import {MatFabButton} from "@angular/material/button";
 import {Router} from "@angular/router";
-import {MatLabel} from "@angular/material/form-field";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmDialog} from "../confirm-dialog/confirm-dialog";
+import {FormsModule} from "@angular/forms";
+import {MatOption, MatSelect} from "@angular/material/select";
 
 @Component({
     selector: 'app-tasks-list',
@@ -17,7 +19,11 @@ import {ConfirmDialog} from "../confirm-dialog/confirm-dialog";
         PriorityColor,
         MatIcon,
         MatFabButton,
-        MatLabel
+        MatLabel,
+        FormsModule,
+        MatFormField,
+        MatSelect,
+        MatOption
     ],
     templateUrl: './tasks-list.html',
     styleUrl: './tasks-list.css'
@@ -28,6 +34,13 @@ export class TasksList implements OnInit {
     tasks: Task[] = [];
 
     private readonly dialog: MatDialog;
+    selectedStatus: TaskStatus | undefined = undefined;
+    selectedCategory: TaskCategory | undefined = undefined;
+    selectedPriority: TaskPriority | undefined = undefined;
+
+    priorities = Object.values(TaskPriority);
+    statuses = Object.values(TaskStatus);
+    categories = Object.values(TaskCategory);
 
     constructor(dialog: MatDialog) {
         this.dialog = dialog;
@@ -66,5 +79,13 @@ export class TasksList implements OnInit {
                 this.onDeleteTask(task);
             }
         });
+    }
+
+    get filteredTasks() {
+        return this.tasks.filter(task =>
+            (!this.selectedStatus || task.status === this.selectedStatus) &&
+            (!this.selectedCategory || task.category === this.selectedCategory) &&
+            (!this.selectedPriority || task.priority === this.selectedPriority)
+        );
     }
 }
