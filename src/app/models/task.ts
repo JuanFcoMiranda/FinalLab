@@ -1,27 +1,12 @@
 export interface Task {
   id: number;
+  userId: number;
   title: string;
-  description: string;
-  expirationDate: Date;
-  priority: TaskPriority;
-  status: TaskStatus;
-  category: TaskCategory;
+  completed: TaskCompletion;
 }
 
-export enum TaskPriority {
-  Low = "Low",
-  Medium = "Medium",
-  High = "High"
-}
-
-export enum TaskStatus {
-  Pending = "Pending",
-  InProgress = "In Progress",
-  Completed = "Completed"
-}
-
-export enum TaskCategory {
-  Work = "Work",
-  Personal = "Personal",
-  Other = "Other"
+export enum TaskCompletion {
+  Undefined = "Undefined",
+  Completed = "Completed",
+  Pending = "Pending"
 }

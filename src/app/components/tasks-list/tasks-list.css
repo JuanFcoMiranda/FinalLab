@@ -6,6 +6,37 @@
     min-height: 100vh;
 }
 
+.tasks-header-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 56px; /* Match the height of .task-item if needed */
+}
+
+.task-item {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(25, 118, 210, 0.08);
+    padding: 24px;
+    width: 320px;
+    transition: box-shadow 0.2s;
+    border-left: 6px solid #1976d2;
+}
+
+.add-task-btn,
+.tasks-header-control-item {
+    height: 40px; /* Adjust to match task item controls */
+    display: flex;
+    align-items: center;
+}
+
+.tasks-header-control-item {
+    box-shadow: 0 2px 10px rgba(25, 118, 210, 0.08);
+    padding: 24px;
+    width: 320px;
+    transition: box-shadow 0.2s;
+}
+
 .add-task-btn {
     margin: 32px 0 24px 0;
     align-self: center;
