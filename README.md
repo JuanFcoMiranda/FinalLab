@@ -1,5 +1,5 @@
 # FinalLab
-[![Actions Status](https://github.com/Zpecter/FinalLab/workflows/Angular%20Build/badge.svg)](https://github.com/Zpecter/FinalLab/actions?query=workflow%3AAngular%20Build)
+[![Actions Status](https://github.com/JuanFcoMiranda/FinalLab/workflows/Angular%20Build/badge.svg)](https://github.com/JuanFcoMiranda/FinalLab/actions?query=workflow%3AAngular%20Build)
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.0.
 
