@@ -6,7 +6,7 @@ on:
 
 jobs:
   angular:
-    name: Angular Build
+    name: PR Verify
     runs-on: ubuntu-latest
 
     strategy:
