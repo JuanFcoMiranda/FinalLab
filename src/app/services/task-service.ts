@@ -1,46 +1,51 @@
-import {Injectable} from '@angular/core';
-import {Task, TaskCategory, TaskPriority, TaskStatus} from '../models/task';
+import {inject, Injectable} from '@angular/core';
+import {Task, TaskCompletion} from '../models/task';
+import {HttpClient} from "@angular/common/http";
+import {map, Observable} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
 })
 export class TaskService {
-    tasks: Task[] = [
-        {
-            id: 1, title: 'Task 1', description: 'Description for Task 1', category: TaskCategory.Work,
-            priority: TaskPriority.High, status: TaskStatus.Pending, expirationDate: new Date('2025-12-31')
-        },
-        {
-            id: 2, title: 'Task 2', description: 'Description for Task 2', category: TaskCategory.Personal,
-            priority: TaskPriority.Medium, status: TaskStatus.InProgress, expirationDate: new Date('2025-11-30')
-        },
-        {
-            id: 3, title: 'Task 3', description: 'Description for Task 3', category: TaskCategory.Other,
-            priority: TaskPriority.Low, status: TaskStatus.Completed, expirationDate: new Date('2025-10-15')
-        }
-    ];
+    private readonly httpClient = inject(HttpClient);
 
-    getTasks(): Task[] {
-        return this.tasks;
+    getTasks(): Observable<Task[]> {
+        return this.httpClient.get<Task[]>('https://jsonplaceholder.typicode.com/todos').pipe(
+            map(tasks => tasks.map(task => ({
+                ...task,
+                completed: task.completed ? TaskCompletion.Completed : TaskCompletion.Pending
+            })))
+        );
     }
 
-    getTaskById(id: number): Task | undefined {
-        return this.tasks.find(task => task.id === id);
-    }
-
-    updateTask(id: number, updatedTask: Task): void {
-        const index = this.tasks.findIndex(task => task.id === id);
-        if (index !== -1) {
-            this.tasks[index] = {...updatedTask, id}; // Ensure the ID remains unchanged
-        }
+    getTaskById(id: number): Observable<Task> {
+        return this.httpClient.get<Task>(`https://jsonplaceholder.typicode.com/todos/${id}`).pipe(
+            map(task => ({
+                ...task,
+                completed: task.completed ? TaskCompletion.Completed : TaskCompletion.Pending
+            }))
+        );
     }
 
     addTask(newTask: Task): void {
-        const newId = this.tasks.length > 0 ? Math.max(...this.tasks.map(task => task.id)) + 1 : 1;
-        this.tasks.push({...newTask, id: newId});
+        const apiTask = {
+            ...newTask,
+            completed: newTask.completed === TaskCompletion.Completed
+        };
+        this.httpClient.post<Task>('https://jsonplaceholder.typicode.com/todos', apiTask).subscribe();
+    }
+
+    updateTask(id: number, updatedTask: Task): void {
+        this.httpClient.put<Task>(
+            `https://jsonplaceholder.typicode.com/todos/${id}`,
+            {
+                ...updatedTask,
+                completed: updatedTask.completed === TaskCompletion.Completed
+            }
+        ).subscribe();
     }
 
     deleteTask(id: number): void {
-        this.tasks = this.tasks.filter(task => task.id !== id);
+        this.httpClient.delete(`https://jsonplaceholder.typicode.com/todos/${id}`).subscribe();
     }
 }

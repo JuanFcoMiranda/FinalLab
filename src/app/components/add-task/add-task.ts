@@ -1,52 +1,40 @@
 import {Component, inject} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {CdkTextareaAutosize} from "@angular/cdk/text-field";
-import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {MatFabButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
-import {MatError, MatFormField, MatInput, MatLabel, MatSuffix} from "@angular/material/input";
-import {MatOption, MatSelect} from "@angular/material/select";
-import {TaskCategory, TaskPriority, TaskStatus} from "../../models/task";
+import {MatError, MatFormField, MatInput, MatLabel} from "@angular/material/input";
 import {TaskService} from "../../services/task-service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {TitleCasePipe} from "@angular/common";
+import {TaskCompletion} from "../../models/task";
+import {MatOption, MatSelect} from "@angular/material/select";
 
 @Component({
   selector: 'app-add-task',
     imports: [
         ReactiveFormsModule,
-        CdkTextareaAutosize,
-        MatDatepicker,
-        MatDatepickerInput,
-        MatDatepickerToggle,
         MatFabButton,
         MatFormField,
         MatIcon,
         MatInput,
         MatLabel,
-        MatOption,
-        MatSelect,
-        MatSuffix,
         MatError,
-        TitleCasePipe
+        TitleCasePipe,
+        MatOption,
+        MatSelect
     ],
   templateUrl: './add-task.html',
   styleUrl: './add-task.css'
 })
 export class AddTask {
+    completedOptions = Object.values(TaskCompletion);
     private readonly taskService = inject(TaskService);
     protected snackBar = inject(MatSnackBar);
-    priorities = Object.values(TaskPriority);
-    statuses = Object.values(TaskStatus);
-    categories = Object.values(TaskCategory);
+
     taskForm: FormGroup = new FormGroup({
         id: new FormControl(0),
         title: new FormControl("", [Validators.minLength(3), Validators.required]),
-        description: new FormControl(""),
-        expirationDate: new FormControl<Date | null>(null, Validators.required),
-        priority: new FormControl("", Validators.required),
-        status: new FormControl("", Validators.required),
-        category: new FormControl("", Validators.required)
+        completed: new FormControl(false)
     });
 
     get formControls(): any {
@@ -59,10 +47,12 @@ export class AddTask {
             this.taskService.addTask(this.taskForm.value);
             this.snackBar.open('Task created successfully!', 'Dismiss', {
                 panelClass: ['snackbar-success'],
+                duration: 3000
             });
         } else {
             this.snackBar.open('Please fill in all required fields.', 'OK', {
                 panelClass: ['snackbar-error'],
+                duration: 3000
             });
         }
     }
